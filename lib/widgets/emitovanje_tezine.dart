@@ -52,7 +52,7 @@ class _EmitovanjeTezineState
     if (data.substring(9, 11) == 'LO') return 'UNDERLOAD';
 
     // Normal weighing
-    String type = data[1]; // G ili N
+    // String type = data[1]; // G ili N
     String weightPart = data
         .substring(2, 9)
         .trim(); // uklanja blank
