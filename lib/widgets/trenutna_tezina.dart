@@ -44,6 +44,10 @@ class TrenutnaTezina extends StatelessWidget {
                 Text(
                   "kg",
                   style: TextStyle(
+                    fontSize:
+                        orientation == Orientation.landscape
+                        ? 50
+                        : 20,
                     color: Theme.of(
                       context,
                     ).colorScheme.onSecondary,
