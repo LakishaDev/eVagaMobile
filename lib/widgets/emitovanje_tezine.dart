@@ -1,32 +1,60 @@
+import 'package:evaga/models/status_konekcije.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
 class EmitovanjeTezine extends StatefulWidget {
-  const EmitovanjeTezine({super.key});
+  const EmitovanjeTezine({
+    super.key,
+    required this.onStatusChanged,
+  });
+
+  final ValueChanged<StatusKonekcije> onStatusChanged;
 
   @override
   State<EmitovanjeTezine> createState() =>
-      _EmitovanjeTezineState();
+      EmitovanjeTezineState();
 }
 
-class _EmitovanjeTezineState
+class EmitovanjeTezineState
     extends State<EmitovanjeTezine> {
   late IOWebSocketChannel channel;
   String weightText = '---';
+
+  void pokreniPracenje() {
+    print("NESTO");
+
+    widget.onStatusChanged(StatusKonekcije.povezujeSe);
+
+    try {
+      channel = IOWebSocketChannel.connect(
+        'ws://10.0.0.155:8080',
+      );
+
+      channel.stream.listen(
+        (message) {
+          setState(() {
+            weightText = parseScaleData(message);
+          });
+        },
+        onError: (error) {
+          widget.onStatusChanged(StatusKonekcije.greska);
+        },
+        onDone: () {
+          widget.onStatusChanged(
+            StatusKonekcije.nijePovezan,
+          );
+        },
+      );
+    } catch (e) {
+      widget.onStatusChanged(StatusKonekcije.greska);
+    }
+  }
 
   @override
   void initState() {
     super.initState();
 
-    channel = IOWebSocketChannel.connect(
-      'ws://10.0.0.155:8080',
-    );
-
-    channel.stream.listen((message) {
-      setState(() {
-        weightText = parseScaleData(message);
-      });
-    });
+    // pokreniPracenje();
   }
 
   @override
@@ -67,7 +95,13 @@ class _EmitovanjeTezineState
       weightText,
       textAlign: TextAlign.center,
       style: orientation == Orientation.portrait
-          ? Theme.of(context).textTheme.displayLarge
+          ? Theme.of(
+              context,
+            ).textTheme.displayLarge!.copyWith(
+              color: Theme.of(
+                context,
+              ).colorScheme.onSecondary,
+            )
           : Theme.of(context).textTheme.displayLarge!
                 .copyWith(fontSize: 150),
     );

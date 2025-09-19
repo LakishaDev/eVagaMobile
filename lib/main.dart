@@ -11,10 +11,11 @@ final ThemeData evagaTheme = ThemeData(
     onSecondary: Colors.white,
     background: Color(0xFFA8C8A2), // pastelna zelena
     onBackground: Colors.black,
-    surface: Colors.white,
+    surface: Color.fromRGBO(203, 207, 187, 1),
     onSurface: Colors.black,
     error: Colors.red,
     onError: Colors.white,
+    tertiary: Color.fromRGBO(26, 52, 61, 255),
   ),
   useMaterial3: true,
   fontFamily: 'Poppins',
