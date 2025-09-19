@@ -48,8 +48,12 @@ class _EmitovanjeTezineState
     // if (data.length != 15) return 'Invalid data';
 
     // Overload / underload
-    if (data.substring(9, 11) == 'OL') return 'OVERLOAD';
-    if (data.substring(9, 11) == 'LO') return 'UNDERLOAD';
+    if (data.substring(9, 11) == 'OL') {
+      return 'PREOPTERECENJE';
+    }
+    if (data.substring(9, 11) == 'LO') {
+      return 'VAGA U MINUSU';
+    }
 
     // Normal weighing
     // String type = data[1]; // G ili N
