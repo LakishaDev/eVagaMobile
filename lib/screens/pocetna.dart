@@ -130,7 +130,7 @@ class _PocetnaEkranState extends State<PocetnaEkran>
               title: const Text("eVagaMobile"),
               centerTitle: false,
               leading: GestureDetector(
-                onLongPress: otvoriPostavke,
+                onDoubleTap: otvoriPostavke,
                 child: postavkeIcon,
               ),
               actions: [

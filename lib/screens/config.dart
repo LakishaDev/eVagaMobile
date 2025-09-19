@@ -24,10 +24,13 @@ class ConfigScreen extends StatelessWidget {
           children: [
             TextField(
               controller: ipController,
+              autocorrect: false,
               decoration: InputDecoration(
                 labelText: "IP Adresa",
               ),
-              onChanged: (value) => config.setIp(value),
+              onTapOutside: (value) =>
+                  config.setIp(ipController.text),
+              // onChanged: (value) => config.setIp(value),
             ),
             TextField(
               controller: portController,
@@ -35,9 +38,12 @@ class ConfigScreen extends StatelessWidget {
                 labelText: "Port",
               ),
               keyboardType: TextInputType.number,
-              onChanged: (value) => config.setPort(
-                int.tryParse(value) ?? 8080,
+              onTapOutside: (value) => config.setPort(
+                int.parse(portController.text),
               ),
+              // onChanged: (value) => config.setPort(
+              //   int.tryParse(value) ?? 8080,
+              // ),
             ),
             const SizedBox(height: 20),
             Container(
@@ -49,7 +55,7 @@ class ConfigScreen extends StatelessWidget {
                 color: Theme.of(
                   context,
                 ).colorScheme.primary,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(15),
               ),
               child: DropdownButton<TipUredjaja>(
                 value: config.tip,
@@ -80,6 +86,10 @@ class ConfigScreen extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () async {
+                    config.setIp(ipController.text);
+                    config.setPort(
+                      int.parse(portController.text),
+                    );
                     await config.save();
                     ScaffoldMessenger.of(
                       context,
