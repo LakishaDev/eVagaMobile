@@ -1,13 +1,21 @@
+import 'package:evaga/config/postavke_uredjaja.dart';
 import 'package:evaga/screens/pocetna.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 
 final ThemeData evagaTheme = ThemeData(
   colorScheme: ColorScheme(
     brightness: Brightness.light,
     primary: Color(0xFF2E5D58), // tamno zelena
     onPrimary: Colors.white,
-    secondary: Color(0xFFC68642), // braon akcenat
+    secondary: Color.fromARGB(
+      255,
+      138,
+      76,
+      52,
+    ), // braon akcenat
     onSecondary: Colors.white,
     background: Color(0xFFA8C8A2), // pastelna zelena
     onBackground: Colors.black,
@@ -15,7 +23,9 @@ final ThemeData evagaTheme = ThemeData(
     onSurface: Colors.black,
     error: Colors.red,
     onError: Colors.white,
-    tertiary: Color.fromRGBO(26, 52, 61, 255),
+    tertiary: Color.fromRGBO(26, 52, 61, 1),
+    surfaceContainer: Color.fromARGB(255, 110, 174, 162),
+    surfaceContainerLowest: Color.fromARGB(255, 26, 52, 61),
   ),
   useMaterial3: true,
   fontFamily: 'Poppins',
@@ -45,12 +55,24 @@ final ThemeData evagaTheme = ThemeData(
   ),
 );
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.immersiveSticky,
   );
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => PostavkeUredjaja(),
+        ),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
